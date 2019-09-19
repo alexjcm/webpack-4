@@ -17,8 +17,8 @@
     "start:prepro": "webpack-dev-server --config ./10.preprocesadores/webpack.config.js",
     "build:prevent-duplication": "webpack --config ./11.prevent-duplication/webpack.config.js",
     "start:prevent-duplication": "webpack-dev-server --config ./11.prevent-duplication/webpack.config.js",
-    "build:dll": "webpack --config ./12.dll/webpack.dll.js",
-    "buld:prevent-duplication-fast": "webpack --config ./12.dll/webpack.config.js"
+    "build:dll": "webpack --config ./12.dll/webpack.dll.config.js",
+    "build:prevent-duplication-fast": "webpack --config ./12.dll/webpack.config.js"
   },
   "author": "AlexJ",
   "license": "MIT",

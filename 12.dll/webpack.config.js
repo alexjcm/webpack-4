@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
 
 module.exports = {
@@ -12,11 +13,6 @@ module.exports = {
     //guardara en dist/js
     filename: "js/bundle-[name].js" //[name] obtiene el nombre del entry para guardarlo con ese nombre
   },
-  devServer: {
-    hot: true, //Activa el HRM
-    open: true, //abre un tab en el navegador con el localhost correspondiente
-    port: 8080
-  },
   module: {
     rules: [
       {
@@ -27,7 +23,9 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          "style-loader",
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
           {
             loader: "css-loader",
             options: {
@@ -39,15 +37,33 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: ["style-loader", "css-loader", "less-loader"]
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          "css-loader",
+          "less-loader"
+        ]
       },
       {
         test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"]
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          "css-loader",
+          "sass-loader"
+        ]
       },
       {
         test: /\.styl$/,
-        use: ["style-loader", "css-loader", "stylus-loader"]
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          "css-loader",
+          "stylus-loader"
+        ]
       },
       {
         test: /\.(jpg|png|svg|gif|woff|eot|ttf|mp4|webm)$/,
@@ -64,20 +80,21 @@ module.exports = {
     extensions: [".js", ".jsx"]
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: "css/[name].css",
+      chunkFilename: "css/[id].css" //para partir mis archivos de manera optimizada cuando se repitan
+    }),
     new HtmlWebpackPlugin({
-      title: "React-splitCunk",
+      title: "React-Dll",
       filename: "index.html", //es conveniente no cambiarle de nombre al archivo
       template: path.resolve(__dirname, "index.html") //toma como base este index
       //(el cual no es el que está dist/ obviamente)  para crear el archivo anterior.
     }),
-    new webpack.HotModuleReplacementPlugin()
-  ],
-  optimization: {
-    splitChunks: {
-      chunks: "all", //indica qué fragmentos se seleccionarán para la optimización
-      minSize: 0, //Tamaño mínimo en bytes para que se genere un fragmento.
-      //Lo recomendado es 30KB(30000)
-      name: "commons" //nombre del archivo commons
-    }
-  }
+    new webpack.HotModuleReplacementPlugin(),
+
+    //esto a a consumir el dll generado por el archivo webpack.dll.config
+    new webpack.DllReferencePlugin({
+      manifest: require("./modules-manifest.json") //el archivo que será cargado en la compilación
+    })
+  ]
 };
