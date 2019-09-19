@@ -18,7 +18,9 @@
     "build:prevent-duplication": "webpack --config ./11.prevent-duplication/webpack.config.js",
     "start:prevent-duplication": "webpack-dev-server --config ./11.prevent-duplication/webpack.config.js",
     "build:dll": "webpack --config ./12.dll/webpack.dll.config.js",
-    "build:prevent-duplication-fast": "webpack --config ./12.dll/webpack.config.js"
+    "build:prevent-duplication-fast": "webpack --config ./12.dll/webpack.config.js",
+    "build:dynamic:dll": "webpack --config ./13.dynamic-import/webpack.dll.config.js",
+    "build:dynamic": "webpack --config ./13.dynamic-import/webpack.config.js"
   },
   "author": "AlexJ",
   "license": "MIT",
@@ -37,6 +39,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.6.0",
+    "@babel/plugin-syntax-dynamic-import": "7.2.0",
     "@babel/plugin-transform-runtime": "7.6.0",
     "@babel/preset-env": "7.6.0",
     "@babel/preset-react": "7.0.0",
